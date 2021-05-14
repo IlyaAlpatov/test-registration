@@ -11,7 +11,9 @@ if (tbody.children.length !== 0) {
 
 const selectionSort = (colNum, type) => {
     let rows = Array.from(tbody.rows);
+    let rowsReverse = Array.from(tbody.rows);
     let compare;
+    let toggle = true;
 
     switch (type) {
         case 'number':
@@ -25,10 +27,24 @@ const selectionSort = (colNum, type) => {
             };
             break;
     }
-    rows.sort(compare);
 
+    // Проверка для сортировки в обе стороны
+    for (let i = 0; i < rows.length - 1; i++) {
+        console.log(rows[i].cells[colNum].innerHTML);
+        console.log(rows[i+1].cells[colNum].innerHTML);
+        if (rows[i].cells[colNum].innerHTML < rows[i+1].cells[colNum].innerHTML) {
+            toggle = false;
+            break;
+        }
+    }
 
-    tbody.append(...rows);
+    if (toggle) {
+        rows.sort(compare);
+        tbody.append(...rows);
+    }else {
+        rowsReverse.sort(compare).reverse();
+        tbody.append(...rowsReverse);
+    }
 }
 
 const sortTable = (event) => {
